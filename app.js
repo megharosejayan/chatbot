@@ -20,11 +20,15 @@ app.get('/', function (req, res) {
 	res.render('index')
 })
 
+app.post('/answer', questionController.getAnswer)
+
 app.get('/questions', questionController.viewAll)
 
-app.get('/questions/new', function (req, res) {
-	res.render('addQues')
-})
+app.get('/questions/new', questionController.newQuestion)
+
+app.get('/questions/:id/edit', questionController.editQuestion)
+
+app.post('/questions/:id', questionController.updateQuestion)
 
 app.post('/questions', questionController.saveQuestion)
 
