@@ -7,7 +7,7 @@
   src="https://code.jquery.com/jquery-3.4.1.js"
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
-  <script src="assets/css/formhandle.js"></script>
+
 </head>
 <body>
 
@@ -36,7 +36,7 @@
 
         <div class="msg-text">
           Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
-          
+          <%= respi.ans %>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
      <%  } %>
   </main>
 
-  <form class="msger-inputarea" method ="POST" action="/">
+  <form class="msger-inputarea" method ="POST" >
     <input type="text" name ="item" class="msger-input" placeholder="Enter your message...">
     <button type="submit" class="msger-send-btn" >Send</button>
   </form>

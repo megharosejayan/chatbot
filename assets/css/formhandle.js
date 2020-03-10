@@ -7,12 +7,22 @@ $(document).ready(function(){
 
       $.ajax({
         type: 'POST',
+        url: '/e',
+        data: chat,
+        success: function(data){
+          
+          location.reload();
+        }
+      
+      });
+      $.ajax({
+        type: 'POST',
         url: '/',
         data: chat,
         success: function(data){
           
           location.reload();
-        },
+        }
       
       });
 

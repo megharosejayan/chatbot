@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 
 })
 
-app.get('/questions/add', function (req, res) {
+app.get('/questions', function (req, res) {
 	res.render('addQuestion')
 })
 
@@ -25,11 +25,16 @@ app.post('/questions/add', function (req, res) {
 	 res.send(req.body);
 })
 
-app.post('/',urlencodedParser, function (req, res) {
+app.post('/e',urlencodedParser, function (req, res) {
 	
 	data.push(req.body);
 	
 	res.json(data);
+});
+app.post('/',urlencodedParser,function(req,res){
+	console.log("test");
+
+	   
 });
 
 app.listen(port, ()=> {console.log("Hey:as " + port)})
