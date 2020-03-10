@@ -32,8 +32,11 @@ app.post('/e',urlencodedParser, function (req, res) {
 	res.json(data);
 });
 app.post('/',urlencodedParser,function(req,res){
-	console.log("test");
-
+	var body=req.body;
+	console.log(body);
+	if(body.item=='hi')
+	console.log("worked");
+      
 	   
 });
 
