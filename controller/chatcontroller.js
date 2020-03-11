@@ -23,7 +23,13 @@ app.post('/',urlencodedParser,function(req,res){
 	if(body.item=='hi')
 	{   var p={item:"hey how can i help you"}
 		bot.push(p);
-    }
+	}
+	else
+	{
+		var p={item:"sorry i did not get you"}
+		bot.push(p);
+
+	}
     res.json(bot);
 	console.log("worked");
       
