@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-var data =[{item:'hi'}];
+var data =[{item:'hey'}];
 var bot=[{item:'Hi, welcome to SimpleChat! Go ahead and send me a message. 😄'}];
 module.exports= function(app){
 
