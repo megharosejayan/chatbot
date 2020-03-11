@@ -36,32 +36,10 @@
 
         <div class="msg-text">
           Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
-          <%= respi.ans %>
         </div>
       </div>
     </div>
-    <% for(var i=0;i< todos.length;i++){%>
-    <div class="msg right-msg">
-      <div
-       class="msg-img"
-       style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
-      ></div>
-     
-      <div class="msg-bubble">
-        
-        <div class="msg-info">
-          <div class="msg-info-name">Sajad</div>
-          <div class="msg-info-time">12:46</div>
-        </div>
-
-        <div class="msg-text">
-          <%= todos[i].item%>
-        </div>
-        
-      </div>
-     
-    </div>
-     <%  } %>
+    
   </main>
 
   <form class="msger-inputarea" method ="POST" >

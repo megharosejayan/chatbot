@@ -18,7 +18,7 @@ $(document).ready(function(){
       $.ajax({
         type: 'POST',
         url: '/',
-        data: chat,
+        data: bot,
         success: function(data){
           
           location.reload();
