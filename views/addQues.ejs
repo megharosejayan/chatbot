@@ -1,0 +1,26 @@
+<%- include ('partials/header') %>
+<div class="col ">
+  <h1 class="mx-auto text-center">Create a New Question</h1>
+  <div class="rwd-form col">
+    <form action="/questions" method="POST">
+      <div class="form-group">
+        <label for="query">Question</label>
+        <input class="form-control" type="text" name="query" placeholder="How was your experience while working in Bangalore in an IT company?" autocomplete="off" required="">
+      </div>
+      <div class="form-group">
+        <label for="answer">Answer</label>
+        <textarea class="form-control" type="text" rows = "5" name="answer" placeholder="For some it is Silicon valley of India, and for some it is Las Vegas of India For me its been 2.5 years i have been in Bangalore, working for TCS. While answering this question I will try to cover the maximum spectrum..."autocomplete="off" required=""></textarea>
+      </div>
+      <div class="form-group">
+        <label for="labels">Labels</label>
+        <input class="form-control" type="text" name="labels" id="labels" placeholder="Banglore, Profession, IT" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <button type="Submit" class="btn btn-md btn-primary btn-block">Submit!</button>
+      </div>
+    </form>
+    
+    <a class="row" href="/questions">Back</a>
+  </div>
+</div>
+<%- include ('partials/footer') %>
