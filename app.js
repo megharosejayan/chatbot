@@ -4,9 +4,14 @@ const bodyParser = require('body-parser')
 const ejsLint = require('ejs-lint')
 const questionController = require("./controllers/question.controller");
 
-
 const app = express()
+var chatcontroller=require('./controller/chatcontroller.js')
+var questioncontroller=require('./controller/questionscontroller.js')
 const port = process.env.PORT | 8000
+app.set('view engine', 'ejs')
+
+chatcontroller(app);
+questioncontroller(app);
 
 mongoose.connect("mongodb://localhost/chatbot");
 
@@ -36,6 +41,5 @@ app.post('/questions/add', function (req, res) {
 	console.log(res.body);
 	res.send(req.body);
 })
-
 
 app.listen(port, ()=> {console.log("Hey:as " + port)})
