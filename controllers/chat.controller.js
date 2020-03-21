@@ -2,6 +2,8 @@ const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var data =[{item:'hey'}];
 var bot=[{item:'Hi, welcome to SimpleChat! Go ahead and send me a message. 😄'}];
+
+
 module.exports= function(app){
 
 app.get('/', function (req, res) {
@@ -11,7 +13,6 @@ app.get('/', function (req, res) {
 
 app.post('/e',urlencodedParser, function (req, res) {
 
-	
 	data.push(req.body);
 	
 	res.json(data);
@@ -31,8 +32,6 @@ app.post('/',urlencodedParser,function(req,res){
 
 	}
     res.json(bot);
-
-      
 	   
 });
 };
