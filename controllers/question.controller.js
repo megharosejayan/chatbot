@@ -1,10 +1,15 @@
 const Question = require('../models/question.model');
 const bodyParser = require('body-parser')
+const chatcontroller=require('./chat.controller')
+arr=chatcontroller.data
+console.log(data)
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports=function(app){
 	app.post('/answer',urlencodedParser, function(req,res) {
-		let questions = req.body;
+		let question = req.body;
+		var quest = question.item.split(" "); 
+		console.log(quest[1])
 		
 		Question.find({}, function(err, questions) {
 			if (err) {
@@ -13,10 +18,11 @@ module.exports=function(app){
 			}
 			console.log("status 200");
 			let index = Math.floor(Math.random() * questions.length);
-	
-			let data = {answer: questions[index]['answer']};
-	
+	        
+	        let data = {answer: questions[index]['answer']};
+	         console.log(data.answer)
 			res.json(data);
+
 		})
 	
 	})

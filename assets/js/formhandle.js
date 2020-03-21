@@ -10,7 +10,7 @@ $(document).ready(function(){
         url: '/e',
         data: chat,
         success: function(data){
-          
+
           location.reload();
         }
       

@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-var data =[{item:'hey'}];
+data =[{item:'hey'}];
+
 var bot=[{item:'Hi, welcome to SimpleChat! Go ahead and send me a message. 😄'}];
 
 
