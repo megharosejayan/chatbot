@@ -60,15 +60,15 @@ exports.saveQuestion = function(req, res) {
 	});
 }
 
-exports.getAnswer = function(req, res) {
-	let question = req.body.query;
-
+exports.getAnswer = function(req,res) {
+	let questions = req.body;
+	
 	Question.find({}, function(err, questions) {
 		if (err) {
 			console.log(err);
 			res.send(err);
 		}
-
+		console.log("status 200");
 		let index = Math.floor(Math.random() * questions.length);
 
 		let data = {answer: questions[index]['answer']};
