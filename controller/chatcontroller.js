@@ -19,7 +19,7 @@ app.post('/e',urlencodedParser, function (req, res) {
 
 app.post('/',urlencodedParser,function(req,res){
 	var body=req.body;
-	console.log(body);
+	
 	if(body.item=='hi')
 	{   var p={item:"hey how can i help you"}
 		bot.push(p);
@@ -31,7 +31,7 @@ app.post('/',urlencodedParser,function(req,res){
 
 	}
     res.json(bot);
-	console.log("worked");
+
       
 	   
 });

@@ -18,7 +18,17 @@ $(document).ready(function(){
       $.ajax({
         type: 'POST',
         url: '/',
-        data: bot,
+        data: chat,
+        success: function(data){
+          
+          location.reload();
+        }
+      
+      });
+      $.ajax({
+        type: 'POST',
+        url: '/answer',
+        data: chat,
         success: function(data){
           
           location.reload();
