@@ -1,25 +1,9 @@
 const Question = require('../models/question.model');
 const bodyParser = require('body-parser')
+
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports=function(app){
-	app.post('/answer',urlencodedParser, function(req,res) {
-		let questions = req.body;
-		
-		Question.find({}, function(err, questions) {
-			if (err) {
-				console.log(err);
-				res.send(err);
-			}
-			console.log("status 200");
-			let index = Math.floor(Math.random() * questions.length);
-	
-			let data = {answer: questions[index]['answer']};
-	
-			res.json(data);
-		})
-	
-	})
 
 	app.get('/questions', function(req, res) {
 		Question.find({}, function(err, result) {
