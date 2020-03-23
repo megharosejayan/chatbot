@@ -48,4 +48,8 @@ userController(app);
 chatController(app);
 questionController(app);
 
+app.get('/test', function(req, res) {
+	res.render('testFrame');
+})
+
 app.listen(port, () => { console.log("Server started on port: " + port) });
