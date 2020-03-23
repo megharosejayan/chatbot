@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+  $('.msger-chat').scrollTop($('.msger-chat').height());
+
   $('form').on('submit', function(){
 
       var item = $('form input');
@@ -13,17 +15,6 @@ $(document).ready(function(){
         success: function(data){
           
           location.reload();
-        }
-      
-      });
-      
-      $.ajax({
-        type: 'POST',
-        url: '/ip',
-        data: chat,
-        success: function(data){
-          
-        
         }
       
       });
