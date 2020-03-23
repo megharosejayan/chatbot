@@ -55,13 +55,15 @@ module.exports = function (app) {
 	// answer route ends here
 
 	function saveChatHistory(ip, question) {
-		var datetime = new Date();
-		console.log(datetime.toISOString().slice(0, 10));
-		date = (datetime.toISOString().slice(0, 10));
+		var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		var dateTime = date+' '+time;
+		console.log(dateTime)
 		const details = new Details({
 			question: question,
 			ip: ip,
-			date: date
+			date: dateTime
 		});
 
 		details.save(function (err) {

@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+  document.getElementById("myText").focus();
+
   $('.msger-chat').scrollTop($('.msger').height());
 
   $('form').on('submit', function(){
@@ -15,6 +17,9 @@ $(document).ready(function(){
         success: function(data){
           
           location.reload();
+          
+            $('.msger-input').focus();
+        
         }
       
       });
