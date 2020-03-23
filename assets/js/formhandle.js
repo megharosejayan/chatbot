@@ -31,3 +31,24 @@ $(document).ready(function(){
 
 
 });
+
+
+function addBotMessage(message, time){
+  
+  let htmlString = `
+  <div class="msg right-msg">
+    <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div>
+
+    <div class="msg-bubble">
+
+      <div class="msg-info">
+        <div class="msg-info-name">You</div>
+        <div class="msg-info-time">` + time + `</div>
+      </div>
+
+      <div class="msg-text">` + message + `
+      </div>
+
+    </div>
+  </div>`
+}
