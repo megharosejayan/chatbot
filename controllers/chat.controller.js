@@ -2,6 +2,7 @@ const bodyParser = require('body-parser')
 const Question = require('../models/question.model');
 const Details=require('../models/details.model')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 data =[{item:'hey'}];
 
 var bot=[{answer:'Hi, welcome to SimpleChat! Go ahead and send me a message. 😄'}];
@@ -69,7 +70,6 @@ app.post('/ip',urlencodedParser, function(req,res) {
 	  })
 	
 })
-
 
 
 };
