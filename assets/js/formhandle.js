@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  $('.msger-chat').scrollTop($('.msger-chat').height());
+  $('.msger-chat').scrollTop($('.msger').height());
 
   $('form').on('submit', function(){
 
