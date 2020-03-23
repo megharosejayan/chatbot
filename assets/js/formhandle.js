@@ -57,5 +57,7 @@ function addMessage(message, time, bot = false) {
   let chatContainer = $('.msger-chat');
 
   chatContainer.append(htmlString);
-  chatContainer.scrollTop($('.msger-chat')[0].scrollHeight);
+  let scrollTop = $('.msger-chat')[0].scrollHeight;
+  chatContainer.animate({scrollTop: scrollTop}, 'slow');
+  // chatContainer.scrollTop($('.msger-chat')[0].scrollHeight);
 }
