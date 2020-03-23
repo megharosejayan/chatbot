@@ -2,7 +2,8 @@ $(document).ready(function(){
 
   document.getElementById("myText").focus();
 
-  $('.msger-chat').scrollTop($('.msger').height());
+  $('.msger-chat').scrollTop($('.msger-chat')[0].scrollHeight);
+
 
   $('form').on('submit', function(){
 
