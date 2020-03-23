@@ -16,6 +16,17 @@ $(document).ready(function(){
         }
       
       });
+      
+      $.ajax({
+        type: 'POST',
+        url: '/ip',
+        data: chat,
+        success: function(data){
+          
+        
+        }
+      
+      });
 
       return false;
 

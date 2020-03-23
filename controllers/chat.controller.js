@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser')
 const Question = require('../models/question.model');
+const Details=require('../models/details.model')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 data =[{item:'hey'}];
 
@@ -25,12 +26,11 @@ module.exports= function(app){
 			console.log("status 200");
 			let index = Math.floor(Math.random() * questions.length);
 	        
-	     Data = {answer: questions[index]['answer']};       //the queried answer should be stored in Data
+	  var Data = {answer: questions[index]['answer']};       //the queried answer should be stored in Data
 	         console.log(Data.answer)
 			 
 
-		})
-	//  mongo db query function ends
+	
 
 	data.push(question);                         //no changes needed
 	if (question.item=='hi')
@@ -43,10 +43,32 @@ module.exports= function(app){
 		bot.push(p);
 
 	}
-    res.json(data);
+
+	
+})
+//  mongo db query function ends
+// sending ip and date
+	
+	  res.json(data);
+  
 	
 	})
 // answer route ends here
+app.post('/ip',urlencodedParser, function(req,res) {
+	console.log(req.ip)
+	var datetime = new Date();
+	console.log(datetime.toISOString().slice(0,10));
+	date=(datetime.toISOString().slice(0,10));
+	const person = new Details({
+		ip: req.ip,
+		date: date
+	  });
+	  
+	  person.save(function (err) {
+		if (err) return handleError(err);
+	  })
+	
+})
 
 
 
