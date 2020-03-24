@@ -47,6 +47,7 @@ Or resign immediately from company and we will give you experience letter but in
 
 console.log(questions);
 
+
 Question.insertMany(questions, function (err, question) {
 	if (err) {
 		console.log(err);

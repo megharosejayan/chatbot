@@ -5,10 +5,20 @@ $(document).ready(function () {
   $('.msger-chat').scrollTop($('.msger-chat')[0].scrollHeight);
 
 
+  $("form").submit(function(e){
+    e.preventDefault();
+  });
+
   $('form').on('submit', function () {
 
     var item = $('form input');
     var chat = { item: item.val() };
+
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes();
+
+    addMessage(item.val(), time, false);
+    item.val('');
 
 
     $.ajax({
@@ -16,9 +26,16 @@ $(document).ready(function () {
       url: '/answer',
       data: chat,
       success: function (data) {
+        console.log(data);
 
-        location.reload();
-
+        let ans = '';
+        if (JSON.stringify(data) === '{}') {
+          ans = 'Sorry, we had some trouble understanding you.';
+        }
+        else {
+          ans = data[Object.keys(data)[0]].answer;
+        }
+        addMessage(ans, time, true);
         $('.msger-input').focus();
 
       }
@@ -58,6 +75,6 @@ function addMessage(message, time, bot = false) {
 
   chatContainer.append(htmlString);
   let scrollTop = $('.msger-chat')[0].scrollHeight;
-  chatContainer.animate({scrollTop: scrollTop}, 'slow');
+  chatContainer.animate({ scrollTop: scrollTop }, 'slow');
   // chatContainer.scrollTop($('.msger-chat')[0].scrollHeight);
 }
