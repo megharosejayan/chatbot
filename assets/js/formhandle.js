@@ -13,6 +13,8 @@ $(document).ready(function () {
   $('form').on('submit', function () {
 
     var item = $('form input');
+    if(item.val() === '')
+      return;
     var chat = { item: item.val() };
 
     var today = new Date();
