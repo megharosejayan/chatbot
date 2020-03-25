@@ -1,5 +1,6 @@
 const Question = require('../models/question.model');
 const Keyword = require('../models/keyword.model');
+const Middleware = require('../utils/middleware');
 const bodyParser = require('body-parser');
 
 
@@ -7,7 +8,8 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = function (app) {
 
-	app.get('/questions', function (req, res) {
+	
+	app.get('/questions', Middleware.isLoggedIn, function (req, res) {
 		Question.find({}, function (err, result) {
 			if (err) {
 				console.log(err);
@@ -17,14 +19,14 @@ module.exports = function (app) {
 		})
 	})
 
-	app.get('/questions/new', function (req, res) {
+	app.get('/questions/new', Middleware.isLoggedIn, function (req, res) {
 		res.render('editQuestion', {
 			title: 'Create a new Question.,',
 			question: false,
 		});
 	})
 
-	app.get('/questions/:id/edit', urlencodedParser, function (req, res) {
+	app.get('/questions/:id/edit', urlencodedParser, Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
 		Question.findById(id, function (err, question) {
 			if (err) {
@@ -39,7 +41,7 @@ module.exports = function (app) {
 		})
 	})
 
-	app.post('/questions/:id', function (req, res) {
+	app.post('/questions/:id', Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
 		Question.findByIdAndUpdate(id, function (err, question) {
 			if (err) {
@@ -51,7 +53,7 @@ module.exports = function (app) {
 		});
 	})
 
-	app.post('/questions', urlencodedParser, function (req, res) {
+	app.post('/questions', Middleware.isLoggedIn, urlencodedParser, function (req, res) {
 		let question = req.body;
 
 		let labels = question['labels'].match(/(\w+)/g);
