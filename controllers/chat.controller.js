@@ -79,7 +79,7 @@ function saveChatHistory(ip, question) {
 		ip: ip,
 		date: dateTime
 	});
-
+	console.log(details);
 	details.save(function (err) {
 		if (err) return console.log(err);
 	})
