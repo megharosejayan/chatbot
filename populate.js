@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Question = require('./models/question.model');
+const Keyword = require('./models/keyword.model');
 
 mongoose.connect("mongodb://localhost/chatbot");
 
@@ -47,12 +48,34 @@ Or resign immediately from company and we will give you experience letter but in
 
 console.log(questions);
 
+questions.forEach(q => {
+	Question.create(q, function (err, question) {
+		let qid = question.id;
+		keywords = question.labels;
+		saveKeywords(keywords, qid);
+	})
+});
 
-Question.insertMany(questions, function (err, question) {
-	if (err) {
-		console.log(err);
-	}
-	console.log(question);
-})
+console.log('Done');
 
-console.log('Hey')
+function saveKeywords(keywords, q_id) {
+
+	options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+	keywords.forEach(keyword => {
+		keyword = keyword.toLowerCase();
+		console.log(keyword + " " + q_id);
+
+		Keyword.updateOne(
+			{ keyword: keyword },
+			{ $push: { questions: q_id } },
+			options,
+			function (err, result) {
+				if (err) { console.log(err); }
+				console.log(result);
+			}
+		)
+	});
+
+
+}

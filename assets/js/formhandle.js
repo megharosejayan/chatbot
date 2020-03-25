@@ -1,11 +1,12 @@
 $(document).ready(function () {
 
+  let ans_arr = [];
   document.getElementById("myText").focus();
 
   $('.msger-chat').scrollTop($('.msger-chat')[0].scrollHeight);
 
 
-  $("form").submit(function(e){
+  $("form").submit(function (e) {
     e.preventDefault();
   });
 
@@ -28,13 +29,7 @@ $(document).ready(function () {
       success: function (data) {
         console.log(data);
 
-        let ans = '';
-        if (JSON.stringify(data) === '{}') {
-          ans = 'Sorry, we had some trouble understanding you.';
-        }
-        else {
-          ans = data[Object.keys(data)[0]].answer;
-        }
+        let ans = getAnswer(data);
         addMessage(ans, time, true);
         $('.msger-input').focus();
 
@@ -48,6 +43,24 @@ $(document).ready(function () {
 
 
 });
+
+
+function getAnswer(arr) {
+  if (arr.length == 0)
+    return 'Sorry, we had some trouble understanding you.';
+
+  arr = sortByKey(arr, 'count');
+  ans_arr = arr;
+  console.log(arr[0][1])
+  return arr[0].answer;
+}
+
+function sortByKey(array, key) {
+  return array.sort(function (a, b) {
+    var x = a[key]; var y = b[key];
+    return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+  });
+}
 
 
 function addMessage(message, time, bot = false) {
@@ -76,5 +89,4 @@ function addMessage(message, time, bot = false) {
   chatContainer.append(htmlString);
   let scrollTop = $('.msger-chat')[0].scrollHeight;
   chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-  // chatContainer.scrollTop($('.msger-chat')[0].scrollHeight);
 }
