@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String,
     role: String,
-    school: { type: Schema.Types.ObjectId, ref: "Question" },
+    school: { type: mongoose.Schema.Types.ObjectId, ref: "School" },
 });
 
 userSchema.plugin(passportLocalMongoose);

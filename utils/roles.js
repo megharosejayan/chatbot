@@ -3,4 +3,4 @@ const ROLES = {
     School_Admin: 'school-admin'
   }
   
-  export { ROLES }
+module.exports = ROLES;
