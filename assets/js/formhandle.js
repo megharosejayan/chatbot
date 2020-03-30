@@ -74,7 +74,7 @@ function addMessage(message, time, bot = false) {
   let name = bot ? 'Bot' : 'You';
   let id   = bot ? 'bttn':'';
   let button=''
-  if(id=='bttn'&&message=='Sorry, we had some trouble understanding you.')
+  if(id=='bttn'&&message!='Sorry, we had some trouble understanding you.')
   button='<button id="bttn">see more</button>'
   let htmlString = `      <div class="msg ` + side + `-msg">
   <div class="msg-bubble">
@@ -105,19 +105,35 @@ function addMessage(message, time, bot = false) {
   
       <div class="msg-info">
         <div class="msg-info-name">Related Questions</div>
-        <div class="msg-info-time">` + time + `</div>
       </div>
      
-      <div class="msg-text">
-      ` + item.query + `
+      <div class="msg-text" >
+     <p id="txt">`+item.query+`</p>
+     <p id="ans"></p>
       </div>
   
     </div>
   </div>`;
     chatContainer.append(questions);
+    let scrollTop = $('.msger-chat')[0].scrollHeight;
+    chatContainer.animate({ scrollTop: scrollTop }, 'slow');
     // alert( item.query );
    })
    
+   $('#txt').click(()=>{
+    var text=$('#txt').text()
+    ans_arr.forEach((item)=>{
+    if(item.query==text)
+   $('#ans').text(item.answer)
+    })
+    let scrollTop = $('.msger-chat')[0].scrollHeight;
+    chatContainer.animate({ scrollTop: scrollTop }, 'slow');
+
+  })
+   
+   
   });
+
+  
 }
 
