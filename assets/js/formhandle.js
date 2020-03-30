@@ -75,7 +75,7 @@ function addMessage(message, time, bot = false) {
   let id = bot ? 'bttn' : '';
   let button = ''
   if (id == 'bttn' && message != 'Sorry, we had some trouble understanding you.')
-    button = '<button id="bttn">see more</button>'
+    button = '<button id="bttn" class="bttn">See related questions</button>'
   let htmlString = `      <div class="msg ` + side + `-msg">
   <div class="msg-bubble">
 

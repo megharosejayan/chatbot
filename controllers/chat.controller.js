@@ -6,7 +6,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 data = [{ item: 'hey' }];
 
-var bot = [{ answer: 'Hi, welcome to SimpleChat! Go ahead and send me a message. 😄' }];
+var bot = [{ answer: 'Hi there, welcome to the Chatbot, how can I help you today' }];
 
 
 module.exports = function (app) {
