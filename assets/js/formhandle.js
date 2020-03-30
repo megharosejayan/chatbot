@@ -3,7 +3,7 @@ $(document).ready(function () {
 
 
 
-  
+
   document.getElementById("myText").focus();
 
   $('.msger-chat').scrollTop($('.msger-chat')[0].scrollHeight);
@@ -16,7 +16,7 @@ $(document).ready(function () {
   $('form').on('submit', function () {
 
     var item = $('form input');
-    if(item.val() === '')
+    if (item.val() === '')
       return;
     var chat = { item: item.val() };
 
@@ -72,10 +72,10 @@ function addMessage(message, time, bot = false) {
 
   let side = bot ? 'left' : 'right';
   let name = bot ? 'Bot' : 'You';
-  let id   = bot ? 'bttn':'';
-  let button=''
-  if(id=='bttn'&&message!='Sorry, we had some trouble understanding you.')
-  button='<button id="bttn">see more</button>'
+  let id = bot ? 'bttn' : '';
+  let button = ''
+  if (id == 'bttn' && message != 'Sorry, we had some trouble understanding you.')
+    button = '<button id="bttn">see more</button>'
   let htmlString = `      <div class="msg ` + side + `-msg">
   <div class="msg-bubble">
 
@@ -87,7 +87,7 @@ function addMessage(message, time, bot = false) {
     <div class="msg-text">
     ` + message + `
     </div>
-`+button+`
+`+ button + `
   </div>
 </div>`;
   console.log(ans_arr[0])
@@ -95,45 +95,50 @@ function addMessage(message, time, bot = false) {
   let chatContainer = $('.msger-chat');
 
   chatContainer.append(htmlString);
- 
+
   let scrollTop = $('.msger-chat')[0].scrollHeight;
   chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-  $( "#bttn" ).click(function() {
-   ans_arr.forEach(function(item){
-    let questions = `      <div class="msg ` + side + `-msg">
+  $("#bttn").click(function () {
+    ans_arr.forEach(function (item) {
+      let questions = `      <div class="msg ` + side + `-msg">
     <div class="msg-bubble">
   
-      <div class="msg-info">
-        <div class="msg-info-name">Related Questions</div>
-      </div>
      
       <div class="msg-text" >
-     <p id="txt">`+item.query+`</p>
-     <p id="ans"></p>
+     <p class="txt">`+ item.query + `</p>
+     
+     <p class="ans" style="display:none"><br>`+ item.answer + `</p>
       </div>
   
     </div>
   </div>`;
-    chatContainer.append(questions);
-    let scrollTop = $('.msger-chat')[0].scrollHeight;
-    chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-    // alert( item.query );
-   })
-   
-   $('#txt').click(()=>{
-    var text=$('#txt').text()
-    ans_arr.forEach((item)=>{
-    if(item.query==text)
-   $('#ans').text(item.answer)
+      chatContainer.append(questions);
+      let scrollTop = $('.msger-chat')[0].scrollHeight;
+      chatContainer.animate({ scrollTop: scrollTop }, 'slow');
+      // alert( item.query );
     })
-    let scrollTop = $('.msger-chat')[0].scrollHeight;
-    chatContainer.animate({ scrollTop: scrollTop }, 'slow');
 
-  })
-   
-   
+    $(document).on("click", ".msg-text", function () {
+      console.log($(this).children())
+      $(this).find('.ans').show();
+      // var clickedBtnID = $(this).attr('id'); // or var clickedBtnID = this.id
+      // alert('you clicked on button #' + clickedBtnID);
+    });
+
+    // $('#txt').click(() => {
+    //   var text = $('#txt').text()
+    //   ans_arr.forEach((item) => {
+    //     if (item.query == text)
+    //       $('#ans').text(item.answer)
+    //   })
+    //   let scrollTop = $('.msger-chat')[0].scrollHeight;
+    //   chatContainer.animate({ scrollTop: scrollTop }, 'slow');
+
+    // })
+
+
   });
 
-  
+
 }
 
