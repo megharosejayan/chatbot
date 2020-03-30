@@ -74,7 +74,7 @@ function addMessage(message, time, bot = false) {
   let name = bot ? 'Bot' : 'You';
   let id   = bot ? 'bttn':'';
   let button=''
-  if(id=='bttn'&&message!='Sorry, we had some trouble understanding you.')
+  if(id=='bttn'&&message=='Sorry, we had some trouble understanding you.')
   button='<button id="bttn">see more</button>'
   let htmlString = `      <div class="msg ` + side + `-msg">
   <div class="msg-bubble">
@@ -90,6 +90,7 @@ function addMessage(message, time, bot = false) {
 `+button+`
   </div>
 </div>`;
+  console.log(ans_arr[0])
 
   let chatContainer = $('.msger-chat');
 
@@ -97,8 +98,6 @@ function addMessage(message, time, bot = false) {
  
   let scrollTop = $('.msger-chat')[0].scrollHeight;
   chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-
-
   $( "#bttn" ).click(function() {
    ans_arr.forEach(function(item){
     let questions = `      <div class="msg ` + side + `-msg">
@@ -116,9 +115,6 @@ function addMessage(message, time, bot = false) {
     </div>
   </div>`;
     chatContainer.append(questions);
-    let scrollTop = $('.msger-chat')[0].scrollHeight;
-    chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-  
     // alert( item.query );
    })
    
