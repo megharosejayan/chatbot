@@ -9,6 +9,7 @@ const User = require("./models/user.model")
 const chatController = require("./controllers/chat.controller");
 const userController = require("./controllers/user.controller");
 const questionController = require("./controllers/question.controller");
+const instituteController = require("./controllers/institution.controller");
 
 const app = express();
 const port = process.env.PORT | 8000;
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 userController(app);
 chatController(app);
 questionController(app);
+instituteController(app);
 
 app.get('/test', function(req, res) {
 	res.render('testFrame');

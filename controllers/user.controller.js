@@ -45,7 +45,6 @@ module.exports = function (app) {
         let newUser = new User({
             username: req.body.username,
             email: req.body.email,
-            school: req.body.school, 
         });
 
         User.register(newUser, req.body.password, (err, user) => {
@@ -53,9 +52,11 @@ module.exports = function (app) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate email
                     req.flash("error", "That email has already been registered.");
+                    console.log(err);
                     return res.redirect("/register");
                 }
                 // Some other error
+                console.log(err);
                 req.flash("error", "Something went wrong...");
                 return res.redirect("/register");
             }

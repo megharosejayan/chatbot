@@ -41,9 +41,9 @@ module.exports = function (app) {
 		})
 	})
 
-	app.post('/questions/:id', Middleware.isLoggedIn, function (req, res) {
+	app.post('/questions/:id', urlencodedParser, Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
-		Question.findByIdAndUpdate(id, function (err, question) {
+		Question.findByIdAndUpdate(id, req.body, function (err, question) {
 			if (err) {
 				console.log(err);
 				res.send(err);
@@ -72,6 +72,18 @@ module.exports = function (app) {
 		});
 	})
 
+	
+	app.get('/questions/:id/delete', Middleware.isLoggedIn, function (req, res) {
+		let id = req.params.id;
+		Question.findByIdAndRemove(id, function (err, question) {
+			if (err) {
+				console.log(err);
+				res.send(err);
+			}
+			console.log(question.id + ' deleted.');
+			return res.redirect('/questions');
+		});
+	})
 };
 
 function saveKeywords(keywords, q_id) {

@@ -118,23 +118,22 @@ function addMessage(message, time, bot = false) {
       // alert( item.query );
     })
 
-    $(document).on("click", ".msg-text", function () {
+    // $(document).on("click", ".msg-bubble", function () {
+    $(".msg-bubble").click(function () {
       console.log($(this).children())
-      $(this).find('.ans').show();
+      let element = $(this).find('.ans');
+      if (element.is(":visible")) {
+        element.hide(300);
+      } else {
+        console.log($(this).offset());
+        console.log($(this).height());
+        element.show(300);
+      }
+
       // var clickedBtnID = $(this).attr('id'); // or var clickedBtnID = this.id
       // alert('you clicked on button #' + clickedBtnID);
     });
 
-    // $('#txt').click(() => {
-    //   var text = $('#txt').text()
-    //   ans_arr.forEach((item) => {
-    //     if (item.query == text)
-    //       $('#ans').text(item.answer)
-    //   })
-    //   let scrollTop = $('.msger-chat')[0].scrollHeight;
-    //   chatContainer.animate({ scrollTop: scrollTop }, 'slow');
-
-    // })
 
 
   });
