@@ -10,11 +10,11 @@
           autocomplete="off" required="" <% if(institution) { %> value="<%= institution.name %>" <% }%>>
       </div>
       <div class="form-group">
-        <label for="category">Category</label>
-        <select id="category" class=" form-control" name="category" required>
+        <label for="institutionType">Institution Type</label>
+        <select id="institutionType" class=" form-control" name="institutionType" required>
           <!-- <option value="--select--">-- Select --</option> -->
-          <% categories.forEach( (category) => {%>
-          <option value="<%= category %>" <% if(institution) { %> <% if(category == institution.category) { %> selected <% } %> <% }%> ><%= category %></option>
+          <% institutionTypes.forEach( (institutionType) => {%>
+          <option value="<%= institutionType %>" <% if(institution) { %> <% if(institutionType == institution.institutionType) { %> selected <% } %> <% }%> ><%= institutionType %></option>
           <% } ) %>
         </select>
       </div>

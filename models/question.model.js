@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 let QuestionSchema = new Schema({
 	query: {type: String, required: true, max: 200},
 	answer: String,
+	category: String,
+	institutionType: String,
 	labels: [
 		{
 			type: String

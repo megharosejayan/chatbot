@@ -14,6 +14,27 @@
   <div class="col-md-12">
     <h4>Institutions</h4>
   </div>
+
+  <form class="col-md-12 my-2" method="GET" action="/institutions/">
+    <div class="row">
+      <div class="form-group col-md-8">
+        <div class="row">
+          <label class="col-md-4" for="institutionType">Institiution Type</label>
+          <select id="institutionType" class="col-md-8 form-control" name="institutionType" required>
+            <option value="--select--">All types</option>
+            <% institutionTypes.forEach( (institutionType) => {%>
+            <option value="<%= institutionType %>" <% if(institutionType == currType) { %> selected <% } %>><%= institutionType %>
+            </option>
+            <% } ) %>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4 form-group">
+        <button type="Submit" class="btn btn-md btn-primary btn-block">Submit!</button>
+      </div>
+    </div>
+  </form>
+
   <% institutions.forEach(function(institution) { %>
 
   <div class="col-md-6 col-xs-12 my-2">
@@ -23,7 +44,7 @@
           <h4><%= institution.name %></h4>
         </div>
         <div class="col-xs-6 col">
-          <h4 class="text-muted"><%= institution.category %></h4>
+          <h4 class="text-muted"><%= institution.institutionType %></h4>
         </div>
       </div>
       <div class="row my-1">

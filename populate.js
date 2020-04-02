@@ -14,6 +14,8 @@ Micro usb.
 HDMI (a,b,c,d,e).
 Kensington Security Slot (not a port but still usefull for computers running security cams, etc).`,
 	labels: ['USB', 'ports', 'computers'],
+	category: "Academics",
+	institutionType: "School",
 	dateCreated: Date.now()
 },
 {
@@ -28,6 +30,8 @@ Learning Opportunity:
 
 Companies here work on leading technologies with reputed clients. You can always expect to land a challenging assignment that will enhance your learning curve. Also, you will always be updated on leading and upcoming technology boom beforehand.`,
 	labels: ['Banglore', 'life', 'work'],
+	category: "Sports",
+	institutionType: "School",
 	dateCreated: Date.now()
 },
 {
@@ -36,12 +40,24 @@ Companies here work on leading technologies with reputed clients. You can always
 Continue with same salary for one year.
 Or resign immediately from company and we will give you experience letter but in this case you don't need to give`,
 	labels: ['IT', 'life', 'retirement'],
+	category: "Sports",
+	institutionType: "School",
 	dateCreated: Date.now()
 },
 {
 	query: "What are the advantages of using a database over a file system?",
 	answer: `A database usually contains considerably more relational and metadata on its content.A database generally subscribes to common data types such as integers, strings etc. A database engine is able `,
 	labels: ['database', 'files', 'advantages'],
+	category: "School",
+	institutionType: "School",
+	dateCreated: Date.now()
+},
+{
+	query: "What are the advantages of using a database over a file system?",
+	answer: `A database usually contains considerably more relational and metadata on its content.A database generally subscribes to common data types such as integers, strings etc. A database engine is able `,
+	labels: ['database', 'files', 'advantages'],
+	category: "Academics",
+	institutionType: "College",
 	dateCreated: Date.now()
 },
 ]

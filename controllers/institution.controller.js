@@ -1,6 +1,6 @@
 const Institution = require('../models/institution.model');
 const Middleware = require('../utils/middleware');
-const categories = require('../utils/categories');
+const data = require('../utils/categories');
 const bodyParser = require('body-parser');
 
 
@@ -10,12 +10,22 @@ module.exports = function (app) {
 
 
 	app.get('/institutions', Middleware.isLoggedIn, function (req, res) {
-		Institution.find({}, function (err, result) {
+		let currType = req.query.institutionType;
+		if (!data.institutionTypes.includes(currType))
+			currType = false;
+		console.log(currType);
+
+		let query = {};
+
+		if (currType)
+			query = { institutionType: currType };
+
+		Institution.find(query, function (err, result) {
 			if (err) {
 				console.log(err);
 				res.send(err);
 			}
-			res.render("viewInstitutions", { 'institutions': result });
+			res.render("viewInstitutions", { 'institutions': result, institutionTypes: data.institutionTypes, currType: currType });
 		})
 	})
 
@@ -23,7 +33,7 @@ module.exports = function (app) {
 		res.render('editInstitution', {
 			title: 'Create a new Institution.',
 			institution: false,
-			categories: categories,
+			institutionTypes: data.institutionTypes,
 		});
 	})
 
@@ -39,7 +49,7 @@ module.exports = function (app) {
 			res.render('editInstitution', {
 				title: 'Edit Institution',
 				institution: institution,
-				categories: categories,
+				institutionTypes: data.institutionTypes,
 			});
 		})
 	})

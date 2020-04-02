@@ -6,7 +6,7 @@
   <h1><span class="glyphicon glyphicon-tent align-bottom" aria-hidden="true"><img height="45px"
         src="/assets/img/comment.png"></span> Welcome to Chatbot!</h1>
   <hr>
-  <a class="btn btn-primary btn-lg mb-0" href="/questions/new" role="button">Add new question</a>
+  <a class="btn btn-primary btn-lg mb-0" href="questions/select" role="button">Add new question</a>
 </header>
 
 <div class="row text-center" style="display: flex; flex-wrap: wrap;">
@@ -24,20 +24,6 @@
             <option value="--select--">All categories</option>
             <% categories.forEach( (category) => {%>
             <option value="<%= category %>" <% if(category == currCategory) { %> selected <% } %>><%= category %>
-            </option>
-            <% } ) %>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-8">
-        <div class="row">
-          <label class="col-md-4" for="institutionType">Institiution Type</label>
-          <select id="institutionType" class="col-md-8 form-control" name="institutionType" required>
-            <option value="--select--">All types</option>
-            <% institutionTypes.forEach( (institutionType) => {%>
-            <option value="<%= institutionType %>" <% if(institutionType == currType) { %> selected <% } %>><%= institutionType %>
             </option>
             <% } ) %>
           </select>

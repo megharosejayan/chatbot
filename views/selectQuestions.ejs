@@ -1,0 +1,54 @@
+<%- include ('partials/header') %>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/question_view.css">
+
+<header class="jumbotron py-5">
+  <h1><span class="glyphicon glyphicon-tent align-bottom" aria-hidden="true"><img height="45px"
+        src="/assets/img/comment.png"></span> Welcome to Chatbot!</h1>
+  <hr>
+  <a class="btn btn-primary btn-lg mb-0" href="questions/select" role="button">Add new question</a>
+</header>
+
+<div class="row text-center" style="display: flex; flex-wrap: wrap;">
+
+  <div class="col-md-12">
+    <h4>Questions</h4>
+  </div>
+
+  <form class="col-md-12 my-2" method="GET" action="questions/select">
+    <div class="row">
+      <div class="form-group col-md-8">
+        <div class="row">
+          <label class="col-md-4" for="category">Category</label>
+          <select id="category" class="col-md-8 form-control" name="category" required>
+            <option value="--select--">All categories</option>
+            <% categories.forEach( (category) => {%>
+            <option value="<%= category %>" <% if(category == currCategory) { %> selected <% } %>><%= category %>
+            </option>
+            <% } ) %>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4 form-group">
+        <button type="Submit" class="btn btn-md btn-primary btn-block">Submit!</button>
+      </div>
+    </div>
+  </form>
+
+  <% questions.forEach(function(question) { %>
+
+  <a href="/institution/questions/select/<%= question.id %>" class="col-md-6 col-xs-12 my-2">
+    <div>
+      <div class="thumbnail card p-3">
+        <div class="caption">
+          <h4><%= question.query %></h4>
+        </div>
+      </div>
+    </div>
+  </a>
+  <% }); %>
+
+
+</div>
+
+<%- include ('partials/footer') %>

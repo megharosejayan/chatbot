@@ -1,6 +1,7 @@
 const Question = require('../models/question.model');
 const Keyword = require('../models/keyword.model');
 const Middleware = require('../utils/middleware');
+const data = require('../utils/categories');
 const bodyParser = require('body-parser');
 
 
@@ -8,14 +9,31 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = function (app) {
 
-	
+
 	app.get('/questions', Middleware.isLoggedIn, function (req, res) {
-		Question.find({}, function (err, result) {
+		let currCategory = req.query.category;
+		if (!data.categories.includes(currCategory))
+			currCategory = false;
+
+		let query = {};
+
+		if (currCategory)
+			query.category = currCategory;
+
+		let currType = req.query.institutionType;
+		if (!data.institutionTypes.includes(currType))
+			currType = false;
+
+		if (currType)
+			query.institutionType = currType;
+
+		console.log(query)
+		Question.find(query, function (err, result) {
 			if (err) {
 				console.log(err);
 				res.send(err);
 			}
-			res.render("viewQuestions", { 'questions': result });
+			res.render("viewQuestions", { 'questions': result, categories: data.categories, currCategory: currCategory, institutionTypes: data.institutionTypes, currType: currType });
 		})
 	})
 
@@ -23,6 +41,8 @@ module.exports = function (app) {
 		res.render('editQuestion', {
 			title: 'Create a new Question.,',
 			question: false,
+			action: "/questions/",
+			categories: data.categories,
 		});
 	})
 
@@ -37,6 +57,8 @@ module.exports = function (app) {
 			res.render('editQuestion', {
 				title: 'Edit Question',
 				question: question,
+				action: "/questions/" + id,
+				categories: data.categories,
 			});
 		})
 	})
@@ -72,7 +94,7 @@ module.exports = function (app) {
 		});
 	})
 
-	
+
 	app.get('/questions/:id/delete', Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
 		Question.findByIdAndRemove(id, function (err, question) {

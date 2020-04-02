@@ -8,6 +8,7 @@ const LocalStrategy = require('passport-local');
 const User = require("./models/user.model")
 const chatController = require("./controllers/chat.controller");
 const userController = require("./controllers/user.controller");
+const customerController = require("./controllers/customer.controller");  
 const questionController = require("./controllers/question.controller");
 const instituteController = require("./controllers/institution.controller");
 
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 
 userController(app);
 chatController(app);
+customerController(app);
 questionController(app);
 instituteController(app);
 

@@ -13,13 +13,20 @@ module.exports = function (app) {
     // login logic: app.post("/login", middleware, callback)
     app.post("/login", urlencodedParser, (req, res, next) => {
         passport.authenticate("local", (err, user, info) => {
-            if (err) { return next(err); }
+            console.log(info)
+            if (err) {
+                console.log(err)
+                return next(err);
+            }
             if (!user) {
                 req.flash("error", "Invalid username or password");
                 return res.redirect('/login');
             }
             req.logIn(user, err => {
-                if (err) { return next(err); }
+                if (err) {
+                    console.log(err)
+                    return next(err);
+                }
                 let redirectTo = req.session.redirectTo ? req.session.redirectTo : '/questions';
                 delete req.session.redirectTo;
                 req.flash("success", "Good to see you again, " + user.username);

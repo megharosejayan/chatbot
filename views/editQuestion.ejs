@@ -2,7 +2,7 @@
 <div class="col ">
   <h1 class="mx-auto text-center"><%= title %></h1>
   <div class="rwd-form col">
-    <form  method="POST"  <% if(question) { %> action="/questions/<%= question.id %> "<% } else { %> action="/questions" <% } %> >
+    <form  method="POST" action="<%= action %>" >
       <div class="form-group">
         <label for="query">Question</label>
         <input class="form-control" type="text" name="query" placeholder="How was your experience while working in Bangalore in an IT company?" autocomplete="off" required="" <% if(question) { %> value="<%= question.query %>" <% }%> >
@@ -10,6 +10,16 @@
       <div class="form-group">
         <label for="answer">Answer</label>
         <textarea class="form-control" type="text" rows = "5" name="answer" placeholder="For some it is Silicon valley of India, and for some it is Las Vegas of India For me its been 2.5 years i have been in Bangalore, working for TCS. While answering this question I will try to cover the maximum spectrum..."autocomplete="off" required="" ><% if(question) { %> <%= question.answer %> <% }%></textarea>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4" for="category">Category</label>
+        <select id="category" class="col-md-8 form-control" name="category" required>
+          <option value="--select--">All categories</option>
+          <% categories.forEach( (category) => {%>
+          <option value="<%= category %>"><%= category %>
+          </option>
+          <% } ) %>
+        </select>
       </div>
       <div class="form-group">
         <label for="labels">Labels</label>
