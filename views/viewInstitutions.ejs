@@ -15,7 +15,7 @@
     <h4>Institutions</h4>
   </div>
 
-  <form class="col-md-12 my-2" method="GET" action="/institutions/">
+  <form class="col-md-12 my-2" method="GET" action="/institutions">
     <div class="row">
       <div class="form-group col-md-8">
         <div class="row">
@@ -23,7 +23,8 @@
           <select id="institutionType" class="col-md-8 form-control" name="institutionType" required>
             <option value="--select--">All types</option>
             <% institutionTypes.forEach( (institutionType) => {%>
-            <option value="<%= institutionType %>" <% if(institutionType == currType) { %> selected <% } %>><%= institutionType %>
+            <option value="<%= institutionType %>" <% if(institutionType == currType) { %> selected <% } %>>
+              <%= institutionType %>
             </option>
             <% } ) %>
           </select>
@@ -37,27 +38,29 @@
 
   <% institutions.forEach(function(institution) { %>
 
-  <div class="col-md-6 col-xs-12 my-2">
-    <div class="thumbnail card p-3">
-      <div class="row my-1">
-        <div class="col-xs-6 col">
-          <h4><%= institution.name %></h4>
+  <a href="/institutions/<%= institution.id %>/users">
+    <div class="col-md-6 col-xs-12 my-2">
+      <div class="thumbnail card px-3 pb-2">
+        <div class="row card mb-2">
+          <div class="col-xs-6 col">
+            <h4><%= institution.name %></h4>
+          </div>
+          <div class="col-xs-6 col">
+            <h4 class="text-muted"><%= institution.institutionType %></h4>
+          </div>
         </div>
-        <div class="col-xs-6 col">
-          <h4 class="text-muted"><%= institution.institutionType %></h4>
-        </div>
-      </div>
-      <div class="row my-1">
-        <div class="col-xs-6 col">
-          <a href="/institutions/<%= institution.id %>/edit" class="text">Edit</a>
-        </div>
-        <div class="col-xs-6 col">
-          <a href="/institutions/<%= institution.id %>/delete" class="text"
-            onclick="return confirm('Do you want to delete this institution ! This action cannot be reversed');">Delete</a>
+        <div class="row my-1">
+          <div class="col-xs-6 col">
+            <a href="/institutions/<%= institution.id %>/edit" class="text">Edit</a>
+          </div>
+          <div class="col-xs-6 col">
+            <a href="/institutions/<%= institution.id %>/delete" class="text"
+              onclick="return confirm('Do you want to delete this institution ! This action cannot be reversed');">Delete</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </a>
   <% }); %>
 </div>
 

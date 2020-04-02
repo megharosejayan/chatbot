@@ -1,7 +1,9 @@
 const Institution = require('../models/institution.model');
+const User = require('../models/user.model');
 const Middleware = require('../utils/middleware');
 const data = require('../utils/categories');
 const bodyParser = require('body-parser');
+const async = require('async');
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -35,6 +37,80 @@ module.exports = function (app) {
 			institution: false,
 			institutionTypes: data.institutionTypes,
 		});
+	})
+
+	app.get('/institutions/:id/users', Middleware.isLoggedIn, function (req, res) {
+		let i_id = req.params.id;
+
+		Institution.findById(i_id)
+			.populate({
+				path: 'users'
+			})
+			.exec((err, result) => {
+				if (err) {
+					console.log(err);
+					res.send(err);
+				}
+				res.render("institution", { id: i_id, users: result.users });
+			});
+
+	})
+
+	app.post('/institutions/:id/users', urlencodedParser, Middleware.isLoggedIn, function (req, res) {
+		let i_id = req.params.id;
+
+
+		async.waterfall([
+			function (callback) {
+				Institution.findById(i_id, "institutionType", (err, res) => {
+					if (err) {
+						return callback(err)
+					}
+					return callback(null, res.institutionType);
+				})
+			},
+			function (type, callback) {
+
+				let newUser = new User({
+					username: req.body.username,
+					email: req.body.email,
+					institution: i_id,
+					institutionType: type,
+				});
+
+				User.register(newUser, req.body.password, (err, user) => {
+					if (err) {
+						return callback(err)
+					}
+					return callback(null, user.id);
+				});
+
+			},
+			function (id, callback){
+				Institution.findByIdAndUpdate(
+					i_id,
+					{ $push: { users: id } },
+					function (err, result) {
+						if (err) { return callback(err) }
+						return callback(null, id);
+					}
+				)
+			}
+		], (err, id) => {
+			if (err) {
+				console.log(err);
+				res.send("Something went wrong.");
+			}
+			console.log('New User created: ' + id);
+			res.redirect("/institutions/" + i_id + "/users")
+		});
+
+	})
+
+	app.get('/institutions/:id/users/new', Middleware.isLoggedIn, function (req, res) {
+		let i_id = req.params.id;
+
+		res.render('register')
 	})
 
 	app.get('/institutions/:id/edit', urlencodedParser, Middleware.isLoggedIn, function (req, res) {

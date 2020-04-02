@@ -87,8 +87,6 @@ module.exports = function (app) {
 				console.log(err);
 				res.send(err);
 			}
-			let q_id = result.id;
-			saveKeywords(labels, q_id);
 			res.redirect('/questions');
 
 		});
@@ -107,23 +105,3 @@ module.exports = function (app) {
 		});
 	})
 };
-
-function saveKeywords(keywords, q_id) {
-
-	options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-	keywords.forEach(keyword => {
-		keyword = keyword.toLowerCase();
-		Keyword.updateOne(
-			{ keyword: keyword },
-			{ $push: { questions: q_id } },
-			options,
-			function (err, result) {
-				if (err) { console.log(err); }
-				console.log(result);
-			}
-		)
-	});
-
-
-}

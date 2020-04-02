@@ -68,30 +68,8 @@ questions.forEach(q => {
 	Question.create(q, function (err, question) {
 		let qid = question.id;
 		keywords = question.labels;
-		saveKeywords(keywords, qid);
 	})
 });
 
 console.log('Done');
-
-function saveKeywords(keywords, q_id) {
-
-	options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-	keywords.forEach(keyword => {
-		keyword = keyword.toLowerCase();
-		console.log(keyword + " " + q_id);
-
-		Keyword.updateOne(
-			{ keyword: keyword },
-			{ $push: { questions: q_id } },
-			options,
-			function (err, result) {
-				if (err) { console.log(err); }
-				console.log(result);
-			}
-		)
-	});
-
-
-}
+mongoose.disconnect();

@@ -1,63 +1,69 @@
 const Question = require('../models/question.model');
+const Institution = require('../models/institution.model');
 const UserQuestion = require('../models/userQuestion.model');
 const Keyword = require('../models/keyword.model');
 const Middleware = require('../utils/middleware');
 const data = require('../utils/categories');
 const bodyParser = require('body-parser');
+const async = require('async');
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = function (app) {
 
-	
+
 	app.get('/institution/questions', Middleware.isLoggedIn, function (req, res) {
-		let instId = req.params.id;
 		let currCategory = req.query.category;
-		if(!data.categories.includes(currCategory)) 
+		if (!data.categories.includes(currCategory))
 			currCategory = false;
-		console.log(currCategory);
 
 		let query = {};
-		
-		if(currCategory) 
-			query = {category: currCategory};
-		UserQuestion.find(query, function (err, result) {
-			if (err) {
-				console.log(err);
-				res.send(err);
-			}
-			res.render("viewUserQuestions", { 'questions': result , categories: data.categories, currCategory: currCategory});
-		})
+		if (currCategory)
+			query = { category: currCategory };
+		console.log(req.user.institution)
+		Institution.findById(req.user.institution)
+			.populate({
+				path: 'questions',
+				match: query,
+			})
+			.exec((err, result) => {
+				if (err) {
+					console.log(err);
+					res.send(err);
+				}
+				console.log(result)
+				res.render("viewUserQuestions", { 'questions': result.questions, categories: data.categories, currCategory: currCategory });
+			});
 	})
 
-	
-	app.get('/institution/questions/select/', Middleware.isLoggedIn, function (req, res) {
+
+	app.get('/institution/questions/select', Middleware.isLoggedIn, function (req, res) {
 		let institutionType = req.user.institutionType;
-		
-		if(!institutionType){
+
+		if (!institutionType) {
 			return res.send("Error. User does not have associated Institution Type.")
 		}
 
 		let currCategory = req.query.category;
-		if(!data.categories.includes(currCategory)) 
+		if (!data.categories.includes(currCategory))
 			currCategory = false;
 		console.log(currCategory);
 
-		let query = {institutionType: institutionType};
-		
-		if(currCategory) 
-			query = {category: currCategory};
+		let query = { institutionType: institutionType };
+
+		if (currCategory)
+			query = { category: currCategory };
 		Question.find(query, function (err, result) {
 			if (err) {
 				console.log(err);
 				res.send(err);
 			}
-			res.render("selectQuestions", { 'questions': result , categories: data.categories, currCategory: currCategory});
+			res.render("selectQuestions", { 'questions': result, categories: data.categories, currCategory: currCategory });
 		})
 	})
 
-	
+
 	app.get('/institution/questions/select/:id', Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
 		Question.findById(id, function (err, question) {
@@ -69,31 +75,53 @@ module.exports = function (app) {
 			res.render('editQuestion', {
 				title: 'Edit Question',
 				question: question,
-				action: "/institution/questions/select/",
+				action: "/institution/questions/select",
 				categories: data.categories,
 			});
 		})
 	})
 
-	
+
 	app.post('/institution/questions/select', Middleware.isLoggedIn, urlencodedParser, function (req, res) {
 		let question = req.body;
 		let labels = question['labels'].match(/(\w+)/g);
+		let i_id = req.user.institution
 		question['labelString'] = labels;
 		question['institutionType'] = req.user.institutionType;
 		question['institution'] = req.user.institution;
 
 		newQuestion = new UserQuestion(question);
-		newQuestion.save(function (err, result) {
+
+		async.waterfall([
+			function (callback) {
+				newQuestion.save(function (err, result) {
+					if (err) {
+						return callback(err)
+					}
+					let q_id = result.id;
+					saveKeywords(labels, q_id, i_id);
+					return callback(null, newQuestion.id);
+				})
+			},
+			function (q_id, callback) {
+				Institution.findByIdAndUpdate(
+					i_id,
+					{ $push: { questions: q_id } },
+					function (err, result) {
+						if (err) { return callback(err) }
+						return callback(null, q_id);
+					}
+				)
+			}
+		], (err, q_id) => {
 			if (err) {
 				console.log(err);
-				res.send(err);
+				res.send("Something went wrong.");
 			}
-			let q_id = result.id;
-			saveKeywords(labels, q_id, req.user.institution);
-			res.redirect('/institution/questions');
+			console.log("New question added to db with id: " + q_id + " and associated with institution.");
+			res.redirect("/institution/questions")
+		})
 
-		});
 	})
 
 	// app.get('/questions/new', Middleware.isLoggedIn, function (req, res) {
@@ -135,7 +163,7 @@ module.exports = function (app) {
 	// 	});
 	// })
 
-	
+
 	// app.get('/questions/:id/delete', Middleware.isLoggedIn, function (req, res) {
 	// 	let id = req.params.id;
 	// 	Question.findByIdAndRemove(id, function (err, question) {
@@ -156,12 +184,11 @@ function saveKeywords(keywords, q_id, i_id) {
 	keywords.forEach(keyword => {
 		keyword = keyword.toLowerCase();
 		Keyword.updateOne(
-			{ keyword: keyword , institution: i_id},
+			{ keyword: keyword, institution: i_id },
 			{ $push: { questions: q_id } },
 			options,
 			function (err, result) {
 				if (err) { console.log(err); }
-				console.log(result);
 			}
 		)
 	});

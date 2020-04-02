@@ -1,0 +1,30 @@
+<%- include ('partials/header') %>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/question_view.css">
+
+<header class="jumbotron py-5">
+  <h1><span class="glyphicon glyphicon-tent align-bottom" aria-hidden="true"><img height="45px"
+        src="/assets/img/comment.png"></span> Welcome to Chatbot!</h1>
+  <hr>
+  <a class="btn btn-primary btn-lg mb-0" href="users/new" role="button">Add new User</a>
+</header>
+
+<div class="row text-center" style="display: flex; flex-wrap: wrap;">
+
+  <div class="col-md-12">
+    <h4>Users</h4>
+  </div>
+
+  <% users.forEach(function(user) { %>
+
+  <div class="col-md-4 col-xs-12 my-2">
+    <div class="thumbnail card p-3">
+      <div class="caption">
+        <h4><%= user.username %></h4>
+      </div>
+    </div>
+  </div>
+  <% }); %>
+</div>
+
+<%- include ('partials/footer') %>
