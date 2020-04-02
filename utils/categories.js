@@ -1,6 +1,6 @@
 const categories = [
-    "Schools",
-    "Colleges"
+    "School",
+    "College"
 ];
 
 

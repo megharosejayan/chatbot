@@ -2,16 +2,27 @@
 <div class="col ">
   <h1 class="mx-auto text-center"><%= title %></h1>
   <div class="rwd-form col">
-    <form  method="POST"  <% if(institution) { %> action="/institutions/<%= institution.id %> "<% } else { %> action="/institutions" <% } %> >
+    <form method="POST" <% if(institution) { %> action="/institutions/<%= institution.id %> " <% } else { %>
+      action="/institutions" <% } %>>
       <div class="form-group">
         <label for="name">Institution Name</label>
-        <input class="form-control" type="text" name="name" placeholder="eg: Kendriya Vidyalaya Adoor" autocomplete="off" required="" <% if(institution) { %> value="<%= institution.name %>" <% }%> >
+        <input class="form-control" type="text" name="name" placeholder="eg: Kendriya Vidyalaya Adoor"
+          autocomplete="off" required="" <% if(institution) { %> value="<%= institution.name %>" <% }%>>
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" class=" form-control" name="category" required>
+          <!-- <option value="--select--">-- Select --</option> -->
+          <% categories.forEach( (category) => {%>
+          <option value="<%= category %>" <% if(institution) { %> <% if(category == institution.category) { %> selected <% } %> <% }%> ><%= category %></option>
+          <% } ) %>
+        </select>
       </div>
       <div class="form-group">
         <button type="Submit" class="btn btn-md btn-primary btn-block">Submit!</button>
       </div>
     </form>
-    
+
     <a class="row" href="/institutions">Back</a>
   </div>
 </div>

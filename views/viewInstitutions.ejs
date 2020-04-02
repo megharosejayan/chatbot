@@ -1,36 +1,43 @@
 <%- include ('partials/header') %>
-  
-  <link rel="stylesheet" type="text/css" href="/assets/css/question_view.css">
 
-  <header class="jumbotron py-5">
-    <h1><span class="glyphicon glyphicon-tent align-bottom" aria-hidden="true"><img height="45px" src="/assets/img/comment.png"></span> Welcome to Chatbot!</h1>
-    <hr>
-    <a class="btn btn-primary btn-lg mb-0" href="/institutions/new" role="button">Add new institution</a>
-  </header>
+<link rel="stylesheet" type="text/css" href="/assets/css/question_view.css">
 
-  <div class="row text-center" style="display: flex; flex-wrap: wrap;">
-  
-      <div class="col-md-12">
-        <h4>Institutions</h4>
-      </div>
-      <% institutions.forEach(function(institution) { %>
+<header class="jumbotron py-5">
+  <h1><span class="glyphicon glyphicon-tent align-bottom" aria-hidden="true"><img height="45px"
+        src="/assets/img/comment.png"></span> Welcome to Chatbot!</h1>
+  <hr>
+  <a class="btn btn-primary btn-lg mb-0" href="/institutions/new" role="button">Add new institution</a>
+</header>
 
-      <div class="col-md-6 col-xs-12 my-2">
-        <div class="thumbnail card p-3">
-          <div class="caption">
-            <h4 ><%= institution.name %></h4>
-          </div>
-          <div class="row my-1">
-            <div class="col-xs-6 col">
-              <a href="/institutions/<%= institution.id %>/edit" class="text">Edit</a>
-            </div>
-            <div class="col-xs-6 col">
-              <a href="/institutions/<%= institution.id %>/delete" class="text"  onclick="return confirm('Do you want to delete this institution ! This action cannot be reversed');" >Delete</a>
-            </div>
-          </div>
+<div class="row text-center" style="display: flex; flex-wrap: wrap;">
+
+  <div class="col-md-12">
+    <h4>Institutions</h4>
+  </div>
+  <% institutions.forEach(function(institution) { %>
+
+  <div class="col-md-6 col-xs-12 my-2">
+    <div class="thumbnail card p-3">
+      <div class="row my-1">
+        <div class="col-xs-6 col">
+          <h4><%= institution.name %></h4>
+        </div>
+        <div class="col-xs-6 col">
+          <h4 class="text-muted"><%= institution.category %></h4>
         </div>
       </div>
-      <% }); %>
+      <div class="row my-1">
+        <div class="col-xs-6 col">
+          <a href="/institutions/<%= institution.id %>/edit" class="text">Edit</a>
+        </div>
+        <div class="col-xs-6 col">
+          <a href="/institutions/<%= institution.id %>/delete" class="text"
+            onclick="return confirm('Do you want to delete this institution ! This action cannot be reversed');">Delete</a>
+        </div>
+      </div>
+    </div>
   </div>
+  <% }); %>
+</div>
 
 <%- include ('partials/footer') %>
