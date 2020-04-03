@@ -7,3 +7,4 @@ var DetailsSchema = new Schema({
   date: { type: String }
 });
 module.exports = mongoose.model("details", DetailsSchema);
+// I don't really know why this is here.

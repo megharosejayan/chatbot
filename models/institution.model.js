@@ -6,6 +6,7 @@ let InstitutionSchema = new Schema({
     institutionType: String,
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "UserQuestion" }],
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    keywords: [{ type: mongoose.Schema.Types.ObjectId, ref: "Keywords" }],
 })
 
 module.exports = mongoose.model("Institution", InstitutionSchema);

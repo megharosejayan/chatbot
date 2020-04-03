@@ -6,7 +6,7 @@ var userSchema = mongoose.Schema({
     email: String,
     username: String,
     password: String,
-    role: String,
+    isAdmin: Boolean,
     institutionType: String,
     institution: { type: mongoose.Schema.Types.ObjectId, ref: "Institution" },
 });

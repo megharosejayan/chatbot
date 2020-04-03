@@ -11,7 +11,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 module.exports = function (app) {
 
 
-	app.get('/institutions', Middleware.isLoggedIn, function (req, res) {
+	app.get('/institutions', Middleware.hasAdminPrivelages, function (req, res) {
 		let currType = req.query.institutionType;
 		if (!data.institutionTypes.includes(currType))
 			currType = false;
@@ -31,7 +31,7 @@ module.exports = function (app) {
 		})
 	})
 
-	app.get('/institutions/new', Middleware.isLoggedIn, function (req, res) {
+	app.get('/institutions/new', Middleware.hasAdminPrivelages, function (req, res) {
 		res.render('editInstitution', {
 			title: 'Create a new Institution.',
 			institution: false,
