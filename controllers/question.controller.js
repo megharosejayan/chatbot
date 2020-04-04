@@ -27,11 +27,12 @@ module.exports = function (app) {
 		if (currType)
 			query.institutionType = currType;
 
-		console.log(query)
 		Question.find(query, function (err, result) {
 			if (err) {
+				console.log("GET  /questions");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/"); //TODO
 			}
 			res.render("viewQuestions", { 'questions': result, categories: data.categories, currCategory: currCategory, institutionTypes: data.institutionTypes, currType: currType });
 		})
@@ -50,8 +51,10 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Question.findById(id, function (err, question) {
 			if (err) {
+				console.log("GET  /questions/:id/edit");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/questions"); 
 			}
 			question['labels'] = question['labels'].join(',');
 			res.render('editQuestion', {
@@ -67,10 +70,13 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Question.findByIdAndUpdate(id, req.body, function (err, question) {
 			if (err) {
+				console.log("POST  /questions/:id");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/questions"); 
 			}
 			console.log(question.id + ' updated.');
+			req.flash("success", "Question updated successfully.");
 			res.redirect('/questions');
 		});
 	})
@@ -84,11 +90,14 @@ module.exports = function (app) {
 		newQuestion = new Question(question);
 		newQuestion.save(function (err, result) {
 			if (err) {
+				console.log("POST  /questions");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/questions"); 
 			}
+			console.log("Model Question " + result.id + " added to db");
+			req.flash("success", "New model question added.");
 			res.redirect('/questions');
-
 		});
 	})
 
@@ -97,10 +106,13 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Question.findByIdAndRemove(id, function (err, question) {
 			if (err) {
+				console.log("GET  /questions/:id/delete");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/questions"); //TODO
 			}
 			console.log(question.id + ' deleted.');
+			req.flash("success", "Question deleted.");
 			return res.redirect('/questions');
 		});
 	})

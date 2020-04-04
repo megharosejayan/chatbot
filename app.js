@@ -25,6 +25,7 @@ app.use("/assets/img", express.static(__dirname + "/assets/img"));
 app.use("/assets/js", express.static(__dirname + "/assets/js"));
 
 //passport configuration
+
 app.use(session({
 	secret: process.env.SESSIONSECRET || "node_app_chatbot_secret",
 	resave: false,
@@ -46,14 +47,14 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.get("/", (req, res) => {
+	res.render("home");
+})
+
 userController(app);
 chatController(app);
 customerController(app);
 questionController(app);
 instituteController(app);
-
-app.get('/test', function(req, res) {
-	res.render('testFrame');
-})
 
 app.listen(port, () => { console.log("Server started on port: " + port) });

@@ -7,6 +7,7 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String,
     isAdmin: Boolean,
+    isInstitutionAdmin: Boolean,
     institutionType: String,
     institution: { type: mongoose.Schema.Types.ObjectId, ref: "Institution" },
 });

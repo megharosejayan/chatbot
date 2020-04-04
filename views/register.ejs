@@ -9,17 +9,23 @@
           <input class="form-control" type="text" name="username" autocomplete="off" required />
         </div>
         <div class="form-group">
+          <label for="username">Email</label>
+          <input class="form-control" type="email" name="email" autocomplete="off" required />
+        </div>
+        <div class="form-group">
           <label for="password">Password</label>
-          <input class="form-control" type="password" name="password" autocomplete="off" required />
+          <input class="form-control" id="password" type="password" name="password" autocomplete="off" required />
+          <span toggle="#password" class="float-right fa fa-fw fa-eye field-icon toggle-password"></span>
+        </div>
+        <div class="form-group">
+          <label for="c-password">Confirm Password</label>
+          <input class="form-control" id="c-password" type="password" name="c-password" autocomplete="off" required />
+          <span toggle="#c-password" class="float-right fa fa-fw fa-eye field-icon toggle-password"></span>
         </div>
         <!-- <div class="form-group">
           <label for="school">School</label>
           <input class="form-control" type="text" name="school" autocomplete="off" required />
         </div> -->
-        <div class="form-group">
-          <label for="username">Email</label>
-          <input class="form-control" type="email" name="email" autocomplete="off" required />
-        </div>
         <div class="form-group">
           <button type="submit" class="btn btn-md btn-primary btn-block">Sign Up!</button>
         </div>
@@ -28,5 +34,7 @@
       </form>
     </div>
   </div>
+
+
 
   <%- include ('partials/footer') %>

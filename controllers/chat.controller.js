@@ -1,24 +1,44 @@
 const bodyParser = require('body-parser')
-const Question = require('../models/question.model');
+const Institution = require('../models/institution.model');
 const Keyword = require('../models/keyword.model');
 const Details = require('../models/details.model')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-data = [{ item: 'hey' }];
 
-var bot = [{ answer: 'Hi there, welcome to the Chatbot, how can I help you today' }];
 
 
 module.exports = function (app) {
-	app.get('/', function (req, res) {
-		res.render('index', { me: data, b: bot });
+	app.get('/chat', function (req, res) {
+		var bot = 'Hi there, welcome to the Chatbot, how can I help you today';
+		res.render('index', { welcome: bot });
 
 	});
+
+
+	app.get('/test', function (req, res) {
+		Institution.find({}, 'id name', function (err, institutions) {
+			res.render('testFrame', {institutions: institutions});
+		})
+	})
+
+
+	app.get('/chat/:id', function (req, res) {
+		let i_id = req.params.id;
+		Institution.findById(i_id, (err, institution) => {
+			if (err) {
+				console.log('Error with institution chatbot.');
+				console.log(err);
+				return res.redirect('/chat');
+			}
+			var bot = 'Hi there, ask me anything about ' + institution.name;
+			return res.render('index', { welcome: bot });
+		})
+	});
+
 	// answer route begins
 	app.post('/answer', urlencodedParser, function (req, res) {
-		let question = req.body.item;
+		let question = req.body.query;
 		var words = question.match(/(\w+)/g);       //created an array to store each word of the question
-
 		let query = [];
 		words.forEach(word => {
 			query.push({ keyword: word.toLowerCase() })
@@ -29,6 +49,7 @@ module.exports = function (app) {
 		let results = {};
 
 		Keyword.find({ $or: query })
+			.where('institution').equals(req.body.institution)
 			.populate('questions')
 			.exec(function (err, keywords) {
 				if (err) {
@@ -49,7 +70,8 @@ module.exports = function (app) {
 						}
 					});
 				});
-				res.json(getArrayFrom(results));
+				var sortedQuestionsArray = sortByKey(getArrayFrom(results), 'count');
+				res.json(sortedQuestionsArray);
 			});
 	});
 	// answer route ends here
@@ -57,8 +79,17 @@ module.exports = function (app) {
 
 };
 
+
+function sortByKey(array, key) {
+	return array.sort(function (a, b) {
+		var x = a[key]; var y = b[key];
+		return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+	});
+}
+
+
 function getArrayFrom(obj) {
-	
+
 	var result = [];
 
 	Object.keys(obj).forEach(key => {

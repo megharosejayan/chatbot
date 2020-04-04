@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let KeywordSchema = new Schema({
     keyword: { type: String, required: true, max: 20 },
-    questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
+    questions: [{ type: Schema.Types.ObjectId, ref: "UserQuestion" }],
     institution: { type: Schema.Types.ObjectId, ref: "Institution" },
 })
 

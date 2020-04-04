@@ -8,6 +8,7 @@
   <meta name="description" content="Chatbot made for answering queries">
   <title>Chatbot</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
   <link rel="icon" href="/images/favicon.ico" />
   <link rel="stylesheet" type="text/css" href="/assets/css/common.css">
 </head>
@@ -22,30 +23,41 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
+
+          <% if (currentUser) { if (currentUser.isAdmin) {%>
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/questions">Model Questions <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/institutions">Institutions <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/institution/questions">User Questions <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/test">Test Bots <span class="sr-only">(current)</span></a>
           </li>
+          <% } else { %>
+          <li class="nav-item active">
+            <a class="nav-link" href="/institution/questions">Questions <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <!-- TODO: institution populated -->
+            <a class="nav-link" href="/chat/<%= currentUser.institution %>">Bot <span
+                class="sr-only">(current)</span></a>
+          </li>
+          <% }} %>
+
+
         </ul>
         <ul class="navbar-nav">
           <% if (!currentUser) { %>
           <li class="nav-item active">
             <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">
             <a class="nav-link" href="/register">Sign up <span class="sr-only">(current)</span></a>
-          </li>
+          </li> -->
           <% } else { %>
           <li class="nav-item active">
-            <a class="nav-link" href="/users/<%= currentUser._id %>">Hi, <%= currentUser.username %> <span
+            <a class="nav-link" >Hi, <%= currentUser.username %> <span
                 class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
@@ -57,5 +69,16 @@
     </div>
   </nav>
   <div class="container">
+    <% if (error && error.length > 0) {%>
+    <div class="alert alert-danger" role="alert">
+      <%= error %>
+    </div>
+    <% } %>
+    <% if (success && success.length > 0) {%>
+    <div class="alert alert-success" role="alert">
+      <%= success %>
+    </div>
+    <% } %>
   </div>
   <div class="container">
+    <div class="container">

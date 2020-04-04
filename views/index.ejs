@@ -3,10 +3,9 @@
 
 <head>
   <title>Chat</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
-  <script src="assets/js/formhandle.js"></script>
+  <script src="/assets/js/formhandle.js"></script>
   <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 </head>
 
@@ -21,27 +20,23 @@
       </div>
     </header>
     <main class="msger-chat">
-      <% for(var i=0;i< me.length;i++){%>
-      
-
-
       <div class="msg left-msg">
         <div class="msg-bubble">
           <div class="msg-info">
-            <div class="msg-info-name">BOT</div>
-            <div class="msg-info-time">12:45</div>
+            <div class="msg-info-name">Bot</div>
           </div>
 
           <div class="msg-text">
-            <%= b[i].answer%>
+            <%= welcome %>
 
           </div>
         </div>
       </div>
-
-
-      <%  } %>
     </main>
+
+    <div class="options">
+      <button id="related" class="related">See related questions</button>
+    </div>
 
     <form class="msger-inputarea">
       <input type="text" name="item" class="msger-input" id="myText" placeholder="Enter your message...">

@@ -12,20 +12,18 @@ module.exports = function (app) {
 
 
 	app.get('/institutions', Middleware.hasAdminPrivelages, function (req, res) {
+
 		let currType = req.query.institutionType;
 		if (!data.institutionTypes.includes(currType))
 			currType = false;
-		console.log(currType);
-
-		let query = {};
-
-		if (currType)
-			query = { institutionType: currType };
+		let query = currType ? { institutionType: currType } : {};
 
 		Institution.find(query, function (err, result) {
 			if (err) {
+				console.log("GET  /institutions");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/"); //TODO
 			}
 			res.render("viewInstitutions", { 'institutions': result, institutionTypes: data.institutionTypes, currType: currType });
 		})
@@ -48,8 +46,10 @@ module.exports = function (app) {
 			})
 			.exec((err, result) => {
 				if (err) {
+					console.log("GET  /institutions/:id/users");
 					console.log(err);
-					res.send(err);
+					req.flash("error", "Something went wrong.");
+					req.redirect("/institutions");
 				}
 				res.render("institution", { id: i_id, users: result.users });
 			});
@@ -58,6 +58,12 @@ module.exports = function (app) {
 
 	app.post('/institutions/:id/users', urlencodedParser, Middleware.isLoggedIn, function (req, res) {
 		let i_id = req.params.id;
+
+		if (req.body.password !== req.body['c-password']) {
+			console.log("Passwords didn't match");
+			req.flash("error", "Passwords didn't match.");
+			return res.redirect("/institutions/:id/users/new");
+		}
 
 
 		async.waterfall([
@@ -75,6 +81,7 @@ module.exports = function (app) {
 					username: req.body.username,
 					email: req.body.email,
 					institution: i_id,
+					isInstitutionAdmin: req.user.isAdmin,
 					institutionType: type,
 				});
 
@@ -86,7 +93,7 @@ module.exports = function (app) {
 				});
 
 			},
-			function (id, callback){
+			function (id, callback) {
 				Institution.findByIdAndUpdate(
 					i_id,
 					{ $push: { users: id } },
@@ -98,11 +105,14 @@ module.exports = function (app) {
 			}
 		], (err, id) => {
 			if (err) {
+				console.log("POST  /institutions/:id/users");
 				console.log(err);
-				res.send("Something went wrong.");
+				req.flash("error", "Something went wrong.");
+				res.redirect('/institutions/:id/users/new');
 			}
 			console.log('New User created: ' + id);
-			res.redirect("/institutions/" + i_id + "/users")
+			req.flash("success", "New user created.");
+			res.redirect("/institutions/" + i_id + "/users");
 		});
 
 	})
@@ -115,13 +125,14 @@ module.exports = function (app) {
 
 	app.get('/institutions/:id/edit', urlencodedParser, Middleware.isLoggedIn, function (req, res) {
 		let id = req.params.id;
-		console.log(id);
-
 		Institution.findById(id, function (err, institution) {
 			if (err) {
+				console.log("GET  /institutions/:id/edit");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/institutions");
 			}
+			req.flash('success', 'Edit successfull')
 			res.render('editInstitution', {
 				title: 'Edit Institution',
 				institution: institution,
@@ -134,10 +145,13 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Institution.findByIdAndUpdate(id, req.body, { new: true }, function (err, institution) {
 			if (err) {
+				console.log("POST /institutions/:id");
 				console.log(err);
-				res.send(err);
+				req.flash('error', "Something went wrong.");
+				return res.redirect('/institutions');
 			}
 			console.log(institution.id + ' updated.');
+			req.flash("success", "Update successfull.");
 			return res.redirect('/institutions');
 		});
 	})
@@ -147,10 +161,13 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Institution.findByIdAndRemove(id, function (err, institution) {
 			if (err) {
+				console.log("GET  /institutions/:id/delete");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/institutions");
 			}
 			console.log(institution.id + ' deleted.');
+			req.flash("success", "Institution deleted.");
 			return res.redirect('/institutions');
 		});
 	})
@@ -161,9 +178,12 @@ module.exports = function (app) {
 		newInstitution = new Institution(institution);
 		newInstitution.save(function (err, result) {
 			if (err) {
+				console.log("POST  /institutions");
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				req.redirect("/institutions");
 			}
+			req.flash("success", "Institution added.");
 			return res.redirect('/institutions');
 		});
 	})

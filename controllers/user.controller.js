@@ -12,9 +12,10 @@ module.exports = function (app) {
 
     app.post("/login", urlencodedParser, (req, res, next) => {
         passport.authenticate("local", (err, user, info) => {
-            console.log(info)
             if (err) {
+                console.log("POST /login passport.authenticate()");
                 console.log(err)
+                req.flash("error", err.message);
                 return next(err);
             }
             if (!user) {
@@ -23,11 +24,14 @@ module.exports = function (app) {
             }
             req.logIn(user, err => {
                 if (err) {
+                    console.log("POST /login req.logIN()");
                     console.log(err)
+                    req.flash("error", err.message);
                     return next(err);
                 }
-                let redirectTo = req.session.redirectTo ? req.session.redirectTo : '/questions';
+                let redirectTo = req.session.redirectTo ? req.session.redirectTo : '/'; //TODO
                 delete req.session.redirectTo;
+                console.log(user.username + " Logged in.");
                 req.flash("success", "Good to see you again, " + user.username);
                 res.redirect(redirectTo);
             });
@@ -38,7 +42,7 @@ module.exports = function (app) {
     app.get("/logout", (req, res) => {
         req.logout();
         req.flash("success", "Logged out seccessfully. Look forward to seeing you again!");
-        res.redirect("/");
+        res.redirect("/login");
     });
 
 

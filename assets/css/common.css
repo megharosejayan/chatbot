@@ -77,3 +77,8 @@ span .align-bottom {
     height: 400px;
     width: 100%;
 }
+
+.toggle-password {
+  margin-top: -27px;
+  margin-right: 7px;
+}

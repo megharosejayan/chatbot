@@ -21,6 +21,14 @@ module.exports = function (app) {
 		let query = {};
 		if (currCategory)
 			query = { category: currCategory };
+
+		if (!req.user.institution) {
+			console.log("GET  /institution/questions")
+			console.log("User " + req.user.id + " doesn't have institution.");
+			req.flash("error", "User doesn't seem to be part of an institution.");
+			res.redirect('/'); //TODO
+		}
+
 		Institution.findById(req.user.institution)
 			.populate({
 				path: 'questions',
@@ -28,8 +36,10 @@ module.exports = function (app) {
 			})
 			.exec((err, result) => {
 				if (err) {
+					console.log("GET  /institution/questions")
 					console.log(err);
-					res.send(err);
+					req.flash("error", "Something went wrong.");
+					res.redirect("/"); //TODO
 				}
 				res.render("viewUserQuestions", { 'questions': result.questions, categories: data.categories, currCategory: currCategory });
 			});
@@ -39,6 +49,7 @@ module.exports = function (app) {
 	app.get('/institution/questions/select', Middleware.isLoggedIn, function (req, res) {
 		let institutionType = req.user.institutionType;
 
+		// TODO: institutionType from the req.user.institution.institutionType and I_ID from req.user.institution.id
 		if (!institutionType) {
 			return res.send("Error. User does not have associated Institution Type.")
 		}
@@ -53,8 +64,10 @@ module.exports = function (app) {
 			query = { category: currCategory };
 		Question.find(query, function (err, result) {
 			if (err) {
+				console.log("GET  /institution/questions/select")
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				res.redirect('/institution/questions');
 			}
 			res.render("selectQuestions", { 'questions': result, categories: data.categories, currCategory: currCategory });
 		})
@@ -69,7 +82,7 @@ module.exports = function (app) {
 		});
 	})
 
-	
+
 	app.post('/institution/questions', Middleware.isLoggedIn, urlencodedParser, function (req, res) {
 		let question = req.body;
 		let labels = question['labels'].match(/(\w+)/g);
@@ -84,33 +97,14 @@ module.exports = function (app) {
 			addQuestionToInstitution
 		], (err, q_id) => {
 			if (err) {
+				console.log("POST  /institution/questions")
 				console.log(err);
-				res.send("Something went wrong.");
+				req.flash("error", "Something went wrong.");
+				res.redirect('/institution/questions');
 			}
 			console.log("New question added to db with id: " + q_id + " and associated with institution.");
-			res.redirect("/institution/questions")
-		})
-
-	})
-	app.post('/institution/questions', Middleware.isLoggedIn, urlencodedParser, function (req, res) {
-		let question = req.body;
-		let labels = question['labels'].match(/(\w+)/g);
-		let i_id = req.user.institution
-		question['labels'] = labels;
-		question['institutionType'] = req.user.institutionType;
-		question['institution'] = req.user.institution;
-
-		async.waterfall([
-			async.constant(question, i_id),
-			addModelQuestion,
-			addQuestionToInstitution
-		], (err, q_id) => {
-			if (err) {
-				console.log(err);
-				res.send("Something went wrong.");
-			}
-			console.log("New question added to db with id: " + q_id + " and associated with institution.");
-			res.redirect("/institution/questions")
+			req.flash("success", "New question added.");
+			res.redirect("/institution/questions");
 		})
 
 	})
@@ -119,8 +113,10 @@ module.exports = function (app) {
 		let id = req.params.id;
 		Question.findById(id, function (err, question) {
 			if (err) {
+				console.log("GET  /institution/questions/select/:id")
 				console.log(err);
-				res.send(err);
+				req.flash("error", "Something went wrong.");
+				res.redirect('/institution/questions');
 			}
 			question['labels'] = question['labels'].join(',');
 			res.render('editQuestion', {
@@ -150,11 +146,14 @@ module.exports = function (app) {
 			addQuestionToInstitution
 		], (err, q_id) => {
 			if (err) {
+				console.log("GET  /institution/questions/select");
 				console.log(err);
-				res.send("Something went wrong.");
+				req.flash("error", "Something went wrong.");
+				res.redirect('/institution/questions');
 			}
 			console.log("New question added to db with id: " + q_id + " and associated with institution.");
-			res.redirect("/institution/questions")
+			req.flash("success", "New question added.");
+			res.redirect("/institution/questions");
 		})
 
 	})
@@ -172,7 +171,10 @@ function saveKeywords(keywords, q_id, i_id) {
 			{ $push: { questions: q_id } },
 			options,
 			function (err, result) {
-				if (err) { console.log(err); }
+				if (err) {
+					console.log("Error saving keywords.");
+					console.log(err);
+				}
 				let k_id = result.id;
 				addKeywordToInstitution(k_id, i_id)
 			}
@@ -187,7 +189,10 @@ function addKeywordToInstitution(k_id, i_id) {
 		{ $push: { keywords: k_id } },
 		options,
 		function (err, result) {
-			if (err) { console.log(err); }
+			if (err) {
+				console.log("Error adding keywords to Institution.");
+				console.log(err);
+			}
 		}
 	)
 }
@@ -197,7 +202,10 @@ function addQuestionToInstitution(q_id, i_id, callback) {
 		i_id,
 		{ $push: { questions: q_id } },
 		function (err, result) {
-			if (err) { return callback(err) }
+			if (err) {
+				console.log("Error adding question to Institution.");
+				return callback(err);
+			}
 			return callback(null, q_id);
 		}
 	)
@@ -207,6 +215,7 @@ function saveQuestion(question, i_id, callback) {
 	newQuestion = new UserQuestion(question);
 	newQuestion.save(function (err, result) {
 		if (err) {
+			console.log("Error saving userQuestion.");
 			return callback(err)
 		}
 		let q_id = result.id;
