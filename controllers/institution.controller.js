@@ -62,7 +62,7 @@ module.exports = function (app) {
 		if (req.body.password !== req.body['c-password']) {
 			console.log("Passwords didn't match");
 			req.flash("error", "Passwords didn't match.");
-			return res.redirect("/institutions/:id/users/new");
+			return res.redirect("/institutions/" + i_id + "/users/new");
 		}
 
 
@@ -108,7 +108,7 @@ module.exports = function (app) {
 				console.log("POST  /institutions/:id/users");
 				console.log(err);
 				req.flash("error", "Something went wrong.");
-				res.redirect('/institutions/:id/users/new');
+				res.redirect('/institutions/' + i_id + '/users/new');
 			}
 			console.log('New User created: ' + id);
 			req.flash("success", "New user created.");
